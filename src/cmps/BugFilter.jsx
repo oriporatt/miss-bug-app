@@ -36,7 +36,7 @@ export function BugFilter({ filterBy, onSetFilterBy }) {
     const { title, minSeverity } = filterByToEdit
     
     return (
-        <form className="robot-filter" onSubmit={(event) => {onSubmitFilter(event)}}>
+        <form className="bug-filter" onSubmit={(event) => {onSubmitFilter(event)}}>
             <section>
                 <label htmlFor="title">Title</label>
                 <input value={title} name="title" id="title" onChange={handleChange} />
