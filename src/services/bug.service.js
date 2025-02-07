@@ -9,6 +9,7 @@ export const bugService = {
     getById,
     save,
     remove,
+    getPdf,
 }
 const BASE_URL = '//localhost:3000/api/bug/'
 
@@ -66,3 +67,16 @@ async function save(bug) {
     }
 }
 
+
+
+function getPdf() {
+    axios.get('//localhost:3000/generate-pdf', { responseType: 'blob' })
+        .then(res => {
+            const link = Object.assign(document.createElement('a'), {
+                href: URL.createObjectURL(res.data),
+                download: 'bugs_report.pdf'
+            });
+            link.click();
+        })
+        .catch(console.error);
+}
