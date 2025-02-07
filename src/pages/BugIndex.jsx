@@ -12,8 +12,8 @@ export function BugIndex() {
 
 
   useEffect(() => {
-    loadBugs()
-  }, [])
+    loadBugs(filterBy)
+  }, [filterBy])
 
   function onSetFilterBy(filterBy) {
     setFilterBy(filterBy)
