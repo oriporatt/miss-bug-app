@@ -13,19 +13,18 @@ export const bugService = {
 const BASE_URL = '//localhost:3000/api/bug/'
 
 
-// filterBy = {}
-async function query() {
+async function query(filterBy = {}) {
     try {
         var { data: bugs } = await axios.get(BASE_URL)
 
-        // if (filterBy.txt) {
-        //     const regExp = new RegExp(filterBy.txt, 'i')
-        //     cars = cars.filter(car => regExp.test(car.vendor))
-        // }
+        if (filterBy.title) {
+            const regExp = new RegExp(filterBy.title, 'i')
+            bugs = bugs.filter(bug => regExp.test(bug.title))
+        }
 
-        // if (filterBy.minSpeed) {
-        //     cars = cars.filter(car => car.speed >= filterBy.minSpeed)
-        // }
+        if (filterBy.minSeverity) {
+            bugs = bugs.filter(bug => bug.severity >= filterBy.minSeverity)
+        }
         return bugs
     } catch (err) {
         console.log(err)

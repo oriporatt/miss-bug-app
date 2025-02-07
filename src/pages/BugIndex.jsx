@@ -3,17 +3,23 @@ import { showSuccessMsg, showErrorMsg } from '../services/event-bus.service.js'
 import { BugList } from '../cmps/BugList.jsx'
 import { useState } from 'react'
 import { useEffect } from 'react'
-
+import { BugFilter } from '../cmps/BugFilter.jsx'
 
 export function BugIndex() {
   const [bugs, setBugs] = useState([])
+  const [filterBy, setFilterBy] = useState({title:"",minSeverity:""})
+
+
 
   useEffect(() => {
     loadBugs()
   }, [])
 
+  function onSetFilterBy(filterBy) {
+    setFilterBy(filterBy)
+  }
   async function loadBugs() {
-    const bugs = await bugService.query()
+    const bugs = await bugService.query(filterBy)
     setBugs(bugs)
   }
 
@@ -33,7 +39,7 @@ export function BugIndex() {
     const bug = {
       title: prompt('Bug title?'),
       severity: +prompt('Bug severity?'),
-      description: +prompt('Bug description?'),
+      description: prompt('Bug description?'),
 
     }
     try {
@@ -66,6 +72,7 @@ export function BugIndex() {
 
   return (
     <main className="main-layout">
+      <BugFilter filterBy={filterBy} onSetFilterBy={onSetFilterBy}/>
       <h3>Bugs App</h3>
       <main>
         <button onClick={onAddBug}>Add Bug ⛐</button>
