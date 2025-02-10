@@ -1,4 +1,4 @@
-
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { AppHeader } from './cmps/AppHeader.jsx'
 import { AppFooter } from './cmps/AppFooter.jsx'
 import { Home } from './pages/Home.jsx'

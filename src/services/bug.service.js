@@ -16,16 +16,7 @@ const BASE_URL = '//localhost:3000/api/bug/'
 
 async function query(filterBy = {}) {
     try {
-        var { data: bugs } = await axios.get(BASE_URL)
-
-        if (filterBy.title) {
-            const regExp = new RegExp(filterBy.title, 'i')
-            bugs = bugs.filter(bug => regExp.test(bug.title))
-        }
-
-        if (filterBy.minSeverity) {
-            bugs = bugs.filter(bug => bug.severity >= filterBy.minSeverity)
-        }
+        const { data: bugs } = await axios.get(BASE_URL, { params: filterBy })
         return bugs
     } catch (err) {
         console.log(err)
