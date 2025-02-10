@@ -10,7 +10,7 @@ import { utilService } from '../services/util.service.js'
 
 export function BugIndex() {
   const [bugs, setBugs] = useState([])
-  const [filterBy, setFilterBy] = useState({title:"",minSeverity:""})
+  const [filterBy, setFilterBy] = useState(bugService.getDefaultFilter())
 
 
 
@@ -43,6 +43,8 @@ export function BugIndex() {
       title: prompt('Bug title?'),
       severity: +prompt('Bug severity?'),
       description: prompt('Bug description?'),
+      labels: [...prompt('Labels?')],
+
 
     }
     try {

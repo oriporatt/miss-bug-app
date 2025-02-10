@@ -10,6 +10,7 @@ export const bugService = {
     save,
     remove,
     getPdf,
+    getDefaultFilter
 }
 const BASE_URL = '//localhost:3000/api/bug/'
 
@@ -34,24 +35,27 @@ async function getById(bugId) {
     }
 }
 
-function remove(bugId) {
+async function remove(bugId) {
     try {
-        return axios.get(BASE_URL + bugId + '/remove')
+        const { data } = await axios.delete(BASE_URL + bugId)
+        return data
+
     } catch (err) {
         console.log(err)
         throw err
     }
 }
 
-async function save(bug) {
+async function save(bugToSave) {
     try {
-        const { _id, title, severity, description} = bug
-        const createdAt= Date.now()
-        const queryStrParams = `save?_id=${_id || ''}&title=${title}&description=${description}&severity=${severity}&createdAt=${createdAt}`
+        if (bugToSave._id) {
+            const { data: savedBug } = await axios.put(BASE_URL + bugToSave._id, bugToSave)
+            return savedBug
+        } else {
+            const { data: savedBug } = await axios.post(BASE_URL, bugToSave)
+            return savedBug
 
-        var { data: savedBug } = await axios.get(BASE_URL + queryStrParams)
-        console.log(savedBug)
-        return savedBug
+        }
     } catch (err) {
         console.log(err)
         throw err
@@ -70,4 +74,9 @@ function getPdf() {
             link.click();
         })
         .catch(console.error);
+}
+
+function getDefaultFilter() {
+    
+    return { title: '', minSeverity: '', sortBy: '', sortDirection: 1}
 }
