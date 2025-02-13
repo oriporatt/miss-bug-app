@@ -11,6 +11,7 @@ export function BugDetails() {
 
     const [bug, setBug] = useState(null)
     const { bugId } = useParams()
+    const [spamUserText, setSpamUserText] = useState(null)
 
     useEffect(() => {
         loadBug()
@@ -20,12 +21,16 @@ export function BugDetails() {
         try {
             const bug = await bugService.getById(bugId)
             setBug(bug)
-        } catch (err) {
-            showErrorMsg('Cannot load bug')
+        } catch(err) {
+                if (err.message==="You're being rate-limited. Please wait before trying again.") {
+                    setSpamUserText(err.message)
+                }else{
+                    showErrorMsg('Cannot load bug')
+                }
 
         }
     }
-
+    if (spamUserText) return <h1>{spamUserText}</h1>
     if (!bug) return <h1>loadings....</h1>
     return <div className="bug-details main-layout">
         <h3>Bug Details 🐛</h3>

@@ -29,10 +29,17 @@ async function getById(bugId) {
     try {
         const { data: bug } = await axios.get(BASE_URL + bugId)
         return bug
+    // } catch (err) {
+    //     console.log(err)
+    //     throw err
+    // }
     } catch (err) {
-        console.log(err)
-        throw err
-    }
+
+        if (err.response && err.response.status === 429) {
+            throw new Error("You're being rate-limited. Please wait before trying again.");
+        }
+        throw err; 
+}
 }
 
 async function remove(bugId) {
