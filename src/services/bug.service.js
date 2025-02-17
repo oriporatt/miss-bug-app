@@ -21,6 +21,7 @@ const BASE_URL = (process.env.NODE_ENV !== 'development') ?
 
 
 
+
 async function query(filterBy = {}) {
     try {
         const { data: bugs } = await axios.get(BASE_URL, { params: filterBy })
@@ -80,7 +81,7 @@ async function save(bugToSave) {
 
 async function getBugsForUser(userId) {
     try {
-        const { data: userBugs } = await axios.get(BASE_URL + 'userbugs/'+userId)
+        const { data: userBugs } = await axios.get(BASE_URL + '/userbugs/'+userId)
         return userBugs
     } catch (err) {
         console.log(err)

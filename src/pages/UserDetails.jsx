@@ -18,7 +18,9 @@ export function UserDetails() {
     
     useEffect(() => {
         loadUser()
-        if (userId) loadBugsForUser(userId)
+        if (userId) {
+            loadBugsForUser(userId)
+        }
 
     }, [userId])
 
@@ -36,8 +38,8 @@ export function UserDetails() {
             const newUserBugs = await bugService.getBugsForUser(userId)
             setUserBugs(newUserBugs)
         } catch(err) {
-                    showErrorMsg('Cannot load user')
-                }
+            showErrorMsg('Cannot load user')
+        }
     }
 
     function onRemoveBug(){
@@ -47,7 +49,6 @@ export function UserDetails() {
     function onEditBug(){
         console.log("no edit from user page")
     }
-
     if (!user) return <h1>loadings....</h1>
     return <div className="user-details main-layout">
         <h3>User Details </h3>
