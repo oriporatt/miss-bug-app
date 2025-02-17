@@ -4,18 +4,36 @@ var axios = Axios.create({
     withCredentials: true,
 })
 
+const STORAGE_KEY_LOGGEDIN_USER = 'loggedinUser'
+
+const BASE_URL = (process.env.NODE_ENV !== 'development') ?
+    '/api/' :
+    '//localhost:3000/api/'
+
+const BASE_USER_URL = BASE_URL + 'user/'
+const BASE_AUTH_URL = BASE_URL + 'auth/'
+
+
+
 export const userService = {
     query,
     getById,
     save,
     remove,
+    getLoggedinUser,
+    login,
+    signup,
+    logout,
+    getEmptyUser,
+    saveLocalUser
+
 }
-const BASE_URL = '//localhost:3000/api/user/'
+
 
 
 async function query() {
     try {
-        const { data: users } = await axios.get(BASE_URL)
+        const { data: users } = await axios.get(BASE_USER_URL)
         return users
     } catch (err) {
         console.log(err)
@@ -25,7 +43,7 @@ async function query() {
 
 async function getById(userId) {
     try {
-        const { data: user } = await axios.get(BASE_URL + userId)
+        const { data: user } = await axios.get(BASE_USER_URL + userId)
         return user
     } catch (err) {
         console.log(err)
@@ -35,7 +53,7 @@ async function getById(userId) {
 
 async function remove(userId) {
     try {
-        const { data } = await axios.delete(BASE_URL + userId)
+        const { data } = await axios.delete(BASE_USER_URL + userId)
         return data
 
     } catch (err) {
@@ -47,10 +65,10 @@ async function remove(userId) {
 async function save(userToSave) {
     try {
         if (userToSave._id) {
-            const { data: savedUser } = await axios.put(BASE_URL + userToSave._id, userToSave)
+            const { data: savedUser } = await axios.put(BASE_USER_URL + userToSave._id, userToSave)
             return savedUser
         } else {
-            const { data: savedUser } = await axios.post(BASE_URL, userToSave)
+            const { data: savedUser } = await axios.post(BASE_USER_URL, userToSave)
             return savedUser
 
         }
@@ -60,6 +78,55 @@ async function save(userToSave) {
     }
 }
 
+async function login(credentials) {
+    try {
+        const { data: user } = await axios.post(BASE_AUTH_URL + 'login', credentials)
+        if (user) {
+            return saveLocalUser(user)
+        }
+    } catch (err) {
+        console.error('Failed to login', err)
+        throw err
+    }
+}
 
+async function signup(credentials) {
+    try {
+        const { data: user } = await axios.post(BASE_AUTH_URL + 'signup', credentials)
+        return saveLocalUser(user)
+    } catch (err) {
+        console.error('Failed to signup', err)
+        throw err
+    }
+}
+
+async function logout() {
+    try {
+        await axios.post(BASE_AUTH_URL + 'logout')
+        sessionStorage.removeItem(STORAGE_KEY_LOGGEDIN_USER)
+    } catch (err) {
+        console.error('Failed to logout', err)
+        throw err
+    }
+}
+
+function getEmptyUser() {
+    return {
+        username: '',
+        fullname: '',
+        password: '',
+        imgUrl: '',
+    }
+}
+
+function saveLocalUser(user) {
+    user = { _id: user._id, fullname: user.fullname, isAdmin: user.isAdmin }
+    sessionStorage.setItem(STORAGE_KEY_LOGGEDIN_USER, JSON.stringify(user))
+    return user
+}
+
+function getLoggedinUser() {
+    return JSON.parse(sessionStorage.getItem(STORAGE_KEY_LOGGEDIN_USER))
+}
 
 

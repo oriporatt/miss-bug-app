@@ -1,0 +1,15 @@
+.login-page{
+    display: grid;
+    grid-auto-flow: row;
+
+}
+
+.login-form{
+    display: grid;
+    grid-auto-flow: row;
+}
+
+.signup-form{
+    display: grid;
+    grid-auto-flow: row;
+}
