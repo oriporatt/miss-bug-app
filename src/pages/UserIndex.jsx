@@ -5,9 +5,9 @@ import { useState } from 'react'
 import { useEffect } from 'react'
 
 
-
 export function UserIndex() {
   const [users, setUsers] = useState([])
+  const [loggedinUser, setLoggedinUser] = useState(userService.getLoggedinUser())
 
   useEffect(() => {
     loadUsers()
@@ -66,11 +66,24 @@ export function UserIndex() {
       showErrorMsg('Cannot update user')
     }
   }
+  function refreshCookie(){
+    setLoggedinUser(userService.getLoggedinUser())
 
+  }
 
+  if (!loggedinUser||!loggedinUser.isAdmin )  {
+    return (
+      <>
+          <h1>Admin Page Only</h1>
+          <button onClick={refreshCookie}>Refresh User</button>
+      </>
+    )
+  }
 
   return (
     <main className="main-layout">
+      <button onClick={refreshCookie}>Refresh User </button>
+      
       <h3>Users </h3>
       <main>
         <button onClick={onAddUser}>Add User</button>

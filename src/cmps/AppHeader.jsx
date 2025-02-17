@@ -64,7 +64,8 @@ export function AppHeader() {
       <UserMsg />
       <nav className='app-nav'>
         <NavLink to="/">Home</NavLink> |<NavLink to="/bug">Bugs</NavLink> |
-        <NavLink to="/user">Users</NavLink> | <NavLink to="/about">About</NavLink> |
+         <NavLink to="/about">About</NavLink> | {loggedinUser?.isAdmin ? <NavLink to="/user">Users</NavLink> : ""}
+
       </nav>
       <h1>Bugs are Forever</h1>
       </div>

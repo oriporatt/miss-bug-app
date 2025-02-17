@@ -6,13 +6,16 @@ import { userService } from '../services/user.service.js'
 
 export function BugList({ bugs, onRemoveBug, onEditBug }) {
   const [loggedinUser, setLoggedinUser] = useState(userService.getLoggedinUser())
+  
+
+
 
   return (
     <ul className="bug-list">
       {bugs.map((bug) => (
         <li className="bug-preview" key={bug._id}>
           <BugPreview bug={bug} />
-          {loggedinUser._id===bug.creator._id&&
+          {loggedinUser && (loggedinUser._id===bug.creator._id || loggedinUser.isAdmin) &&
           <div>
             <button
               onClick={() => {
