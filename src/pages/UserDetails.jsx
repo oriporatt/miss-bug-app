@@ -7,7 +7,7 @@ import { showErrorMsg } from '../services/event-bus.service.js'
 import { useParams } from 'react-router'
 import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
-
+import { BugList } from '../cmps/BugList.jsx'
 
 export function UserDetails() {
 
@@ -40,8 +40,13 @@ export function UserDetails() {
                 }
     }
 
+    function onRemoveBug(){
+        console.log("no remove from user page")
+    }
 
-    console.log(userBugs)
+    function onEditBug(){
+        console.log("no edit from user page")
+    }
 
     if (!user) return <h1>loadings....</h1>
     return <div className="user-details main-layout">
@@ -50,7 +55,10 @@ export function UserDetails() {
         <h4>Id: {user._id}</h4>
         <h4>Full Name: {user.fullname}</h4>
         <Link to="/">Back to home</Link>
-
+        {userBugs&&
+            <BugList bugs={userBugs} onRemoveBug={onRemoveBug} onEditBug={onEditBug} />
+        }
+       
     </div>
 
 }
