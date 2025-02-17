@@ -2,22 +2,11 @@ import { useState, useEffect } from 'react'
 import { userService } from '../services/user.service.js'
 
 export function LoginSignup({ onSignup, onLogin }) {
-    const [users, setUsers] = useState([])
+    // const [users, setUsers] = useState([])
     const [credentials, setCredentials] = useState(userService.getEmptyUser())
     const [isSignup, setIsSignup] = useState(false)
 
-    useEffect(() => {
-        loadUsers()
-    }, [])
 
-    async function loadUsers() {
-        try {
-            const users = await userService.query()
-            setUsers(users)
-        } catch (err) {
-            console.log('Had issues loading users', err);
-        }
-    }
 
     function clearState() {
         setCredentials(userService.getEmptyUser())

@@ -1,13 +1,18 @@
 
 import { Link } from 'react-router-dom'
 import { BugPreview } from './BugPreview'
+import { useState } from 'react'
+import { userService } from '../services/user.service.js'
 
 export function BugList({ bugs, onRemoveBug, onEditBug }) {
+  const [loggedinUser, setLoggedinUser] = useState(userService.getLoggedinUser())
+
   return (
     <ul className="bug-list">
       {bugs.map((bug) => (
         <li className="bug-preview" key={bug._id}>
           <BugPreview bug={bug} />
+          {loggedinUser._id===bug.creator._id&&
           <div>
             <button
               onClick={() => {
@@ -23,7 +28,7 @@ export function BugList({ bugs, onRemoveBug, onEditBug }) {
             >
               Edit
             </button>
-          </div>
+          </div>}
           <Link to={`/bug/${bug._id}`}>Details</Link>
         </li>
       ))}
