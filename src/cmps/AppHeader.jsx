@@ -4,6 +4,9 @@ import {UserMsg} from './UserMsg'
 import { NavLink } from 'react-router-dom'
 import { LoginSignup } from "./LoginSignup.jsx"
 import { userService } from "../services/user.service.js"
+import { showErrorMsg, showSuccessMsg } from "../services/event-bus.service.js"
+import { Link } from 'react-router-dom'
+
 
 
 
@@ -13,7 +16,6 @@ export function AppHeader() {
 
 
   async function onLogin(credentials) {
-    console.log(credentials)
     try {
         const user = await userService.login(credentials)
         setLoggedinUser(user)
@@ -24,7 +26,6 @@ export function AppHeader() {
   }
 
   async function onSignup(credentials) {
-      console.log(credentials)
       try {
           const user = await userService.signup(credentials)
           setLoggedinUser(user)
@@ -55,6 +56,7 @@ export function AppHeader() {
 
                     {loggedinUser && <div className="user-preview">
                         <h3>Hello {loggedinUser.fullname}</h3>
+                        <Link to={`/user/${loggedinUser._id}`}>My profile</Link>
                         <button onClick={onLogout}>Logout</button>
                     </div>}
       </section>

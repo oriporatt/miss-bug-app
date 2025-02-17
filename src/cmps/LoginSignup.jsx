@@ -59,7 +59,7 @@ export function LoginSignup({ onSignup, onLogin }) {
                     <input
                         type="text"
                         name="username"
-                        value={credentials.username}
+                        // value={credentials.username}
                         placeholder="Username"
                         onChange={handleChange}
                         required
@@ -67,7 +67,7 @@ export function LoginSignup({ onSignup, onLogin }) {
                     <input
                         type="password"
                         name="password"
-                        value={credentials.password}
+                        // value={credentials.password}
                         placeholder="Password"
                         onChange={handleChange}
                         required

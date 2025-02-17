@@ -10,7 +10,8 @@ export const bugService = {
     save,
     remove,
     getPdf,
-    getDefaultFilter
+    getDefaultFilter,
+    getBugsForUser
 }
 const BASE_URL = '//localhost:3000/api/bug/'
 
@@ -24,6 +25,7 @@ async function query(filterBy = {}) {
         throw err
     }
 }
+
 
 async function getById(bugId) {
     try {
@@ -41,6 +43,8 @@ async function getById(bugId) {
         throw err; 
 }
 }
+
+
 
 async function remove(bugId) {
     try {
@@ -63,6 +67,16 @@ async function save(bugToSave) {
             return savedBug
 
         }
+    } catch (err) {
+        console.log(err)
+        throw err
+    }
+}
+
+async function getBugsForUser(userId) {
+    try {
+        const { data: userBugs } = await axios.get(BASE_URL + 'userbugs/'+userId)
+        return userBugs
     } catch (err) {
         console.log(err)
         throw err
